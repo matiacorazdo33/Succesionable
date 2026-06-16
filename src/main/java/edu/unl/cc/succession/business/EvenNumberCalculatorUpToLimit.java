@@ -16,24 +16,33 @@ public class EvenNumberCalculatorUpToLimit implements Successionable, Printable 
 
 
     public EvenNumberCalculatorUpToLimit(Integer limit) {
+        this(0, limit);
+    }
+
+    public EvenNumberCalculatorUpToLimit(Integer start, Integer limit) {
+        start = validateLimit(start, "Downn limit");
         setLimit(limit);
-        currentTerm = 0;
+        this.currentTerm = start % 2 != 0 ? start + 1 : start;
         printableTerms = new StringBuilder("S = ");
+    }
+
+    private Integer validateLimit(Number value, String label) {
+        if  (value == null) {
+            throw new IllegalArgumentException(label + " cannot be null");
+        }
+        if  (value instanceof Integer) {
+            if (value.intValue() < 0) {
+                throw new IllegalArgumentException(label + " cannot be negative");
+            }
+            return value.intValue();
+        } else {
+            throw new IllegalArgumentException(label + " must be an integer");
+        }
     }
 
     @Override
     public void setLimit(Number limit) {
-        if  (limit == null) {
-            throw new IllegalArgumentException("limit cannot be null");
-        }
-        if  (limit instanceof Integer) {
-            if (limit.intValue() < 0) {
-                throw new IllegalArgumentException("limit cannot be negative");
-            }
-            this.limit = limit.intValue();
-        } else {
-            throw new IllegalArgumentException("limit must be an integer");
-        }
+        this.limit = validateLimit(limit, "Upper limit");
     }
 
     @Override

@@ -1,6 +1,7 @@
 package edu.unl.cc;
 
 import edu.unl.cc.succession.business.EvenNumberCalculatorUpToLimit;
+import edu.unl.cc.succession.business.PrimeNumberCalculatorUpToLimit;
 import edu.unl.cc.succession.model.Printable;
 import edu.unl.cc.succession.model.Successionable;
 
@@ -43,11 +44,11 @@ public class Main {
                 break;
             }
             case (10): {
-                //serie = new PrimeNumberCalculatorUpToLimit(limit);
+                serie = new PrimeNumberCalculatorUpToLimit(limit);
                 break;
             }
             default: {
-                System.out.println("Opción inválida");
+                   System.out.println("Opción inválida");
             }
 
         }
