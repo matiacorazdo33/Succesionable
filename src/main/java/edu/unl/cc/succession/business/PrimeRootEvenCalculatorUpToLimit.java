@@ -4,9 +4,9 @@ import edu.unl.cc.succession.model.Printable;
 import edu.unl.cc.succession.model.Successionable;
 
 /**
- * Representa el calculo de la Serie de primos elevados a la raiz de numeros pares
+ * Representa el calculo de laSerie de primos elevados a la raiz de numeros pares
  * hasta un limite (S = 1^(1/2) + 3^(1/4) + 5^(1/6) + 7^(1/8) + 11^(1/10) + 13^(1/12) ... + N):
- * Autores:
+ * @authors
  * William Granda
  * Hector Guerrero*
  * Matias Labanda
@@ -14,69 +14,101 @@ import edu.unl.cc.succession.model.Successionable;
  * Gabriel Suarez
  */
 
+
 public class PrimeRootEvenCalculatorUpToLimit implements Successionable, Printable {
 
-    private Number limit;
+    private Integer limit;
+    private Integer currentTerm;
+    private StringBuilder printableTerms;
 
-    public PrimeRootEvenCalculatorUpToLimit(Number limit) {
-        this.limit = limit;
+    public PrimeRootEvenCalculatorUpToLimit(Integer limit) {
+        this(1, limit);
     }
 
+    public PrimeRootEvenCalculatorUpToLimit(Integer start, Integer limit) {
+        start = validateLimit(start, "Downn limit");
+        setLimit(limit);
+        this.currentTerm = nextTerm(start - 1).intValue();
+        printableTerms = new StringBuilder("S = ");
+    }
+
+    private Integer validateLimit(Number value, String label) {
+        if (value == null) {
+            throw new IllegalArgumentException(label + " cannot be null");
+        }
+        if (value instanceof Integer) {
+            if (value.intValue() < 0) {
+                throw new IllegalArgumentException(label + " cannot be negative");
+            }
+            return value.intValue();
+        } else {
+            throw new IllegalArgumentException(label + " must be an integer");
+        }
+    }
+
+    @Override
     public void setLimit(Number limit) {
-        this.limit = limit;
+        this.limit = validateLimit(limit, "Upper limit");
     }
 
     @Override
     public Number calculate() {
-        double sum = 0.0;
-        int even = 2;
+        double result = 0;
+        int exponent = 2;
 
-        // Primer término: 1^(1/2)
-        sum += Math.pow(1, 1.0 / even);
-        even += 2;
+        while (currentTerm <= limit) {
 
-        // Primos desde 3 (sin incluir el 2)
-        for (int n = 3; n <= limit.intValue(); n++) {
-            if (isPrime(n)) {
-                sum += Math.pow(n, 1.0 / even);
-                even += 2;
-            }
+            printableTerms.append(currentTerm)
+                    .append("^(1/")
+                    .append(exponent)
+                    .append(") + ");
+
+            result += Math.pow(currentTerm, 1.0 / exponent);
+
+            currentTerm = nextTerm(currentTerm).intValue();
+            exponent += 2;
         }
 
-        return sum;
+        return result;
     }
 
     @Override
     public Number nextTerm(Number current) {
-        if (current.intValue() == 1) {
-            return 3;
+        current = current.intValue() + 1;
+
+        if (current.intValue() == 2) {
+            current = 3;
         }
 
-        int next = current.intValue() + 1;
+        boolean isPrime = false;
 
-        while (!isPrime(next)) {
-            next++;
+        while (!isPrime) {
+            isPrime = isPrime(current.intValue());
+
+            if (!isPrime) {
+                current = current.intValue() + 1;
+            }
         }
 
-        return next;
+        return current;
     }
 
-    @Override
-    public String print() {
-        return "Serie de primos elevados a la raiz de numeros pares hasta un limite";
-    }
-
-    private boolean isPrime(int n) {
-        if (n < 2) {
+    private boolean isPrime(Integer number) {
+        if (number < 1) {
             return false;
         }
 
-        for (int i = 2; i <= Math.sqrt(n); i++) {
-            if (n % i == 0) {
+        for (int i = 2; i < number; i++) {
+            if (number % i == 0) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    @Override
+    public String print() {
+        return printableTerms.toString();
     }
 }

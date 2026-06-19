@@ -3,6 +3,7 @@ package edu.unl.cc.succession.business;
 import edu.unl.cc.succession.model.Printable;
 import edu.unl.cc.succession.model.Successionable;
 
+
 /**
  * Representa el calculo de la Serie de primos elevados a la raiz cuadrada
  * hasta un limite (S = 1^(1/2) + 3^(1/2) + 5^(1/2) + 7^(1/2) + 11^(1/2) + 13^(1/2)+ .. + N^(1/2):
@@ -16,74 +17,100 @@ import edu.unl.cc.succession.model.Successionable;
 
 public class PrimeSquareRootCalculatorUpToLimit implements Successionable, Printable {
 
-    private Number limit;
+    private Integer limit;
+    private Integer currentTerm;
+    private StringBuilder printableTerms;
 
-    public PrimeSquareRootCalculatorUpToLimit(Number limit) {
-        this.limit = limit;
+    public PrimeSquareRootCalculatorUpToLimit(Integer limit) {
+        this(1, limit);
     }
 
+    public PrimeSquareRootCalculatorUpToLimit(Integer start, Integer limit) {
+        start = validateLimit(start, "Downn limit");
+        setLimit(limit);
+        this.currentTerm = nextTerm(start - 1).intValue();
+        printableTerms = new StringBuilder("S = ");
+    }
+
+    private Integer validateLimit(Number value, String label) {
+        if (value == null) {
+            throw new IllegalArgumentException(label + " cannot be null");
+        }
+        if (value instanceof Integer) {
+            if (value.intValue() < 0) {
+                throw new IllegalArgumentException(label + " cannot be negative");
+            }
+            return value.intValue();
+        } else {
+            throw new IllegalArgumentException(label + " must be an integer");
+        }
+    }
+
+    @Override
     public void setLimit(Number limit) {
-        this.limit = limit;
+        this.limit = validateLimit(limit, "Upper limit");
     }
 
     @Override
     public Number calculate() {
-        double sum = 0.0;
 
-        for (int n = 1; n <= limit.intValue(); n++) {
-            if (n == 1 || (isPrime(n) && n != 2)) {
-                sum += Math.pow(n, 1.0 / 2);
-            }
+        double result = 0;
+
+        while (currentTerm <= limit) {
+
+            printableTerms.append(currentTerm)
+                    .append("^(1/2)")
+                    .append(" + ");
+
+            result += Math.pow(currentTerm, 0.5);
+
+            currentTerm = nextTerm(currentTerm).intValue();
         }
 
-        return sum;
+        return result;
     }
 
     @Override
     public Number nextTerm(Number current) {
-        if (current.intValue() == 1) {
-            return 3;
+
+        current = current.intValue() + 1;
+
+        if (current.intValue() == 2) {
+            current = 3;
         }
 
-        int next = current.intValue() + 1;
+        boolean isPrime = false;
 
-        while (!isPrime(next)) {
-            next++;
-        }
+        while (!isPrime) {
 
-        return next;
-    }
+            isPrime = isPrime(current.intValue());
 
-    @Override
-    public String print() {
-        StringBuilder serie = new StringBuilder("S = ");
-        boolean first = true;
-
-        for (int n = 1; n <= limit.intValue(); n++) {
-            if (n == 1 || (isPrime(n) && n != 2)) {
-                if (!first) {
-                    serie.append(" + ");
-                }
-
-                serie.append(n).append("^(1/2)");
-                first = false;
+            if (!isPrime) {
+                current = current.intValue() + 1;
             }
         }
 
-        return serie.toString();
+        return current;
     }
 
-    private boolean isPrime(int n) {
-        if (n < 2) {
+    private boolean isPrime(Integer number) {
+
+        if (number < 1) {
             return false;
         }
 
-        for (int i = 2; i <= Math.sqrt(n); i++) {
-            if (n % i == 0) {
+        for (int i = 2; i < number; i++) {
+
+            if (number % i == 0) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    @Override
+    public String print() {
+        return printableTerms.toString();
     }
 }
