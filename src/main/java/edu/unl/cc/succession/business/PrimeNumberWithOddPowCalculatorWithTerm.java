@@ -8,7 +8,7 @@ import edu.unl.cc.succession.model.Successionable;
  * Autores:
  * William Granda
  * Hector Guerrero
- * Matias Labanda
+ * Matias Labanda*
  * Ricardo Ochoa
  * Gabriel Suarez
  */

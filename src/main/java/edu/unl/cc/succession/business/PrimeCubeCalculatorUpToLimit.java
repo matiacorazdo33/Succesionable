@@ -6,12 +6,12 @@ import edu.unl.cc.succession.model.Successionable;
 /**
  * Representa el cálculo de la Serie números Primos elevados al cubo hasta Limite N
  * S = 1^3 + 3^3 + 5^3 + 7^3 + 11^3 + 13^3 + ... + N^3
- * @authors
+ * @author
  * William Granda
  * Hector Guerrero
  * Matias Labanda
  * Ricardo Ochoa
- * Gabriel Suarez
+ * Gabriel Suarez*
  */
 public class PrimeCubeCalculatorUpToLimit implements Successionable, Printable {
 

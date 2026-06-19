@@ -11,7 +11,7 @@ import edu.unl.cc.succession.model.Successionable;
  * Hector Guerrero
  * Matias Labanda
  * Ricardo Ochoa
- * Gabriel Suarez
+ * Gabriel Suarez*
  */
 public class PrimeCubeCalculatorWithTerm implements Successionable, Printable {
 

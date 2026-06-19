@@ -11,7 +11,7 @@ import edu.unl.cc.succession.model.Successionable;
  * William Granda
  * Hector Guerrero
  * Matias Labanda
- * Ricardo Ochoa
+ * Ricardo Ochoa*
  * Gabriel Suarez
  */
 
@@ -30,7 +30,7 @@ public class SeriePrimosElevadosCubica implements Successionable, Printable {
         start = validateLimit(start, "Down limit");
         setLimit(limit);
         this.countTerms = 0;
-        this.currentTerm = siguientePrimo(start - 1);
+        this.currentTerm = 1;
         printableTerms = new StringBuilder("S = ");
     }
 
@@ -69,6 +69,9 @@ public class SeriePrimosElevadosCubica implements Successionable, Printable {
 
     @Override
     public Number nextTerm(Number current) {
+        if (current.intValue() == 1) {
+            return 3;
+        }
         return siguientePrimo(current.intValue());
     }
 

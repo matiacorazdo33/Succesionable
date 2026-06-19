@@ -8,12 +8,11 @@ import edu.unl.cc.succession.model.Successionable;
  * hasta un limite (S = 1^(1/2) + 3^(1/4) + 5^(1/6) + 7^(1/8) + 11^(1/10) + 13^(1/12) ... + N):
  * Autores:
  * William Granda
- * Hector Guerrero
+ * Hector Guerrero*
  * Matias Labanda
  * Ricardo Ochoa
  * Gabriel Suarez
  */
-
 
 public class PrimeRootEvenCalculatorUpToLimit implements Successionable, Printable {
 
@@ -23,18 +22,22 @@ public class PrimeRootEvenCalculatorUpToLimit implements Successionable, Printab
         this.limit = limit;
     }
 
-    @Override
     public void setLimit(Number limit) {
         this.limit = limit;
     }
 
     @Override
     public Number calculate() {
-        double sum = 0;
+        double sum = 0.0;
         int even = 2;
 
-        for (int n = 1; n <= limit.intValue(); n++) {
-            if (n == 1 || isPrime(n)) {
+        // Primer término: 1^(1/2)
+        sum += Math.pow(1, 1.0 / even);
+        even += 2;
+
+        // Primos desde 3 (sin incluir el 2)
+        for (int n = 3; n <= limit.intValue(); n++) {
+            if (isPrime(n)) {
                 sum += Math.pow(n, 1.0 / even);
                 even += 2;
             }
@@ -45,6 +48,10 @@ public class PrimeRootEvenCalculatorUpToLimit implements Successionable, Printab
 
     @Override
     public Number nextTerm(Number current) {
+        if (current.intValue() == 1) {
+            return 3;
+        }
+
         int next = current.intValue() + 1;
 
         while (!isPrime(next)) {

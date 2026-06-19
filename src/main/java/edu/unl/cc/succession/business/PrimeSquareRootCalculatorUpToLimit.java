@@ -8,7 +8,7 @@ import edu.unl.cc.succession.model.Successionable;
  * hasta un limite (S = 1^(1/2) + 3^(1/2) + 5^(1/2) + 7^(1/2) + 11^(1/2) + 13^(1/2)+ .. + N^(1/2):
  * @authors
  * William Granda
- * Hector Guerrero
+ * Hector Guerrero*
  * Matias Labanda
  * Ricardo Ochoa
  * Gabriel Suarez
@@ -22,18 +22,17 @@ public class PrimeSquareRootCalculatorUpToLimit implements Successionable, Print
         this.limit = limit;
     }
 
-    @Override
     public void setLimit(Number limit) {
         this.limit = limit;
     }
 
     @Override
     public Number calculate() {
-        double sum = 0;
+        double sum = 0.0;
 
         for (int n = 1; n <= limit.intValue(); n++) {
-            if (n == 1 || isPrime(n)) {
-                sum += Math.sqrt(n);
+            if (n == 1 || (isPrime(n) && n != 2)) {
+                sum += Math.pow(n, 1.0 / 2);
             }
         }
 
@@ -42,6 +41,10 @@ public class PrimeSquareRootCalculatorUpToLimit implements Successionable, Print
 
     @Override
     public Number nextTerm(Number current) {
+        if (current.intValue() == 1) {
+            return 3;
+        }
+
         int next = current.intValue() + 1;
 
         while (!isPrime(next)) {
@@ -53,7 +56,21 @@ public class PrimeSquareRootCalculatorUpToLimit implements Successionable, Print
 
     @Override
     public String print() {
-        return "Serie de primos elevados a la raiz cuadrada hasta un limite";
+        StringBuilder serie = new StringBuilder("S = ");
+        boolean first = true;
+
+        for (int n = 1; n <= limit.intValue(); n++) {
+            if (n == 1 || (isPrime(n) && n != 2)) {
+                if (!first) {
+                    serie.append(" + ");
+                }
+
+                serie.append(n).append("^(1/2)");
+                first = false;
+            }
+        }
+
+        return serie.toString();
     }
 
     private boolean isPrime(int n) {
