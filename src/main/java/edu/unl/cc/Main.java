@@ -1,8 +1,6 @@
 package edu.unl.cc;
 
-import edu.unl.cc.succession.business.EvenNumberCalculatorUpToLimit;
-import edu.unl.cc.succession.business.PrimeNumberCalculatorUpToLimit;
-import edu.unl.cc.succession.business.PrimeNumberWithPowCalculatorWithTerm;
+import edu.unl.cc.succession.business.*;
 import edu.unl.cc.succession.model.Printable;
 import edu.unl.cc.succession.model.Successionable;
 
@@ -10,13 +8,29 @@ import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
+/**
+ * Autores:
+ * William Granda
+ * Hector Guerrero
+ * Matias Labanda
+ * Ricardo Ochoa
+ * Gabriel Suarez
+ */
+
 public class Main {
 
     private static void printMenu(){
         System.out.println("CALCULADORA DE SERIES");
         System.out.println("1. Serie de numeros pares hasta un limite (S = 2 + 4 + 6 + 8 + ... N): ");
         System.out.println("2. Serie de primos elevados al cubo  hasta un limite (S = 1^3 + 3^3 + 5^3 + 7^3 + 11^3 + 13^3 ... + N^3): ");
+        System.out.println("3. Serie de primos elevados al cubo  hasta N términos (S = 1^3 + 3^3 + 5^3 + 7^3 + 11^3 + 13^3 ...): ");
+        System.out.println("4. Serie de primos elevados por pares hasta un limite (S = 1^2 + 3^4 + 5^6 + 7^8 + 11^10 + 13^(12) ... + N): ");
+        System.out.println("5. Serie de primos elevados a impares hasta n térmimos (S = S = 1^1 + 3^3 + 5^5 + 7^7 + 11^9 + 13^11 ..): 5 ");
+        System.out.println("6. Serie de primos elevados a la raiz de numeros pares hasta un limite (S = 1^(1/2) + 3^(1/4) + 5^(1/6) + 7^(1/8) + 11^(1/10) + 13^(1/12) + ... + N): ");
         System.out.println("7. Serie de primos elevados a la raiz de numeros impares hasta un n términos (S = 1^(1/1) + 3^(1/3) + 5^(1/5) + 7^(1/7) + 11^(1/9) + 13^(1/11)): ");
+        System.out.println("8. Serie de primos elevados a la raiz cúbica hasta un n términos (S = 1^(1/3) + 3^(1/3) + 5^(1/3) + 7^(1/3) + 11^(1/3) + 13^(1/3): ");
+        System.out.println("9. Serie de primos elevados a la raiz cuadrada hasta un limite (S = 1^(1/2) + 3^(1/2) + 5^(1/2) + 7^(1/2) + 11^(1/2) + 13^(1/2) + ... + N^(1/2)): ");
         System.out.println("10. Serie de primos hasta un limite (S = 1 + 2 + 3 + 5 + 7 + 11 + 13 + .. + N: ");
     }
 
@@ -40,8 +54,36 @@ public class Main {
                 serie = new EvenNumberCalculatorUpToLimit(limit);
                 break;
             }
+            case (2): {
+                serie = new PrimeCubeCalculatorUpToLimit(limit);
+                break;
+            }
+            case (3): {
+                serie = new PrimeCubeCalculatorWithTerm(limit);
+                break;
+            }
+            case (4): {
+                serie = new PrimeNumberWithEvenPowCalculatorUpToLimit(limit);
+                break;
+            }
+            case (5): {
+                serie = new PrimeNumberWithOddPowCalculatorWithTerm(limit);
+                break;
+            }
+            case (6): {
+                serie = new PrimeRootEvenCalculatorUpToLimit(limit);
+                break;
+            }
             case (7): {
                 serie = new PrimeNumberWithPowCalculatorWithTerm(limit);
+                break;
+            }
+            case(8):{
+                serie = new SeriePrimosElevadosCubica(limit);
+                break;
+            }
+            case (9): {
+                serie = new PrimeSquareRootCalculatorUpToLimit(limit);
                 break;
             }
             case (10): {
